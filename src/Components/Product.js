@@ -30,7 +30,8 @@ const Product = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div className='container'>
+         <form onSubmit={handleSubmit}>
       <div className="form-group">
         <label htmlFor="productName">Product Name:</label>
         <input
@@ -80,6 +81,8 @@ const Product = () => {
         Save Product
       </button>
     </form>
+    </div>
+   
   );
 };
 
