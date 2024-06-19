@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSort } from '@fortawesome/free-solid-svg-icons';
 
 const Product = () => {
   const [product, setProduct] = useState('');
@@ -7,7 +9,8 @@ const Product = () => {
   const [note, setNote] = useState(''); 
   const [salesList, setSalesList] = useState([]);
   const [products, setProducts] = useState([]);
- 
+  const [sortedSalesList, setSortedSalesList] = useState([]);
+
   useEffect(() => {
     fetchSales();
     fetchProducts();
@@ -69,11 +72,20 @@ const Product = () => {
 
   };
 
+  const sortSalesList = (columnName) => {
+    const sortedList = [...salesList].sort((a, b) => {
+      if (a[columnName] < b[columnName]) return -1;
+      if (a[columnName] > b[columnName]) return 1;
+      return 0;
+    });
+    setSalesList(sortedList); 
+  };
+
   return (
     <div className='container'>
          <form onSubmit={handleSubmit}>
       <div className="form-group">
-        <label htmlFor="productName">Product Name:</label>
+        <label htmlFor="productName">Ürün</label>
         <select
             id="productName"
             className="form-control"
@@ -81,7 +93,7 @@ const Product = () => {
             onChange={(e) => setProduct(e.target.value)}
             required
           >
-            <option value="">Select a product</option>
+            <option value="">Lütfen bir ürün seçiniz</option>
             {products.map((prod) => (
               <option key={prod.id} value={prod.productName}>
                 {prod.productName}
@@ -91,7 +103,7 @@ const Product = () => {
       </div>
       <div className="form-row">
         <div className="form-group col-md-6">
-          <label htmlFor="quantity">Quantity:</label>
+          <label htmlFor="quantity">Miktar</label>
           <input
             type="number"
             className="form-control"
@@ -102,7 +114,7 @@ const Product = () => {
           />
         </div>
         <div className="form-group col-md-6">
-          <label htmlFor="unit">Unit:</label>
+          <label htmlFor="unit">Birim</label>
           <select
             id="unit"
             className="form-control"
@@ -132,12 +144,11 @@ const Product = () => {
         <table className="table table-bordered">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Product</th>
-              <th>Quantity</th>
-              <th>Unit</th>
-              <th>Note</th>
-          
+              <th onClick={() => sortSalesList('id')}>ID <FontAwesomeIcon icon={faSort} /> </th>
+              <th onClick={() => sortSalesList('product')}>Ürün Adı <FontAwesomeIcon icon={faSort} /></th>
+              <th onClick={() => sortSalesList('quantity')}>Miktar <FontAwesomeIcon icon={faSort} /></th>
+              <th onClick={() => sortSalesList('unit')}>Birim <FontAwesomeIcon icon={faSort} /></th>
+              <th onClick={() => sortSalesList('note')}>Not <FontAwesomeIcon icon={faSort} /></th>
             </tr>
           </thead>
           <tbody>
