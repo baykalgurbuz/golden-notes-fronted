@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Product = () => {
   const [product, setProduct] = useState('');
   const [quantity, setQuantity] = useState('');
-  const [unit, setUnit] = useState('kg'); // varsayılan olarak kg seçili
-  const [note, setNote] = useState('');
+  const [unit, setUnit] = useState('kg');  
+  const [note, setNote] = useState(''); 
+  const [products, setProducts] = useState([]);
+
+  const fetchProducts = async () => {
+    const response = await fetch('http://localhost:8080/api/product');
+    const data = await response.json();
+    setProducts(data);
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = { product, quantity, unit, note };
+    const formData = { product, quantity, unit, note   };
 
     const response = await fetch('http://localhost:8080/api/product', {
       method: 'POST',
@@ -81,6 +92,36 @@ const Product = () => {
         Save Product
       </button>
     </form>
+    <div className="mt-5">
+        <h2>Product List</h2>
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Unit</th>
+              <th>Note</th>
+          
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((prod) => (
+              <tr key={prod.id}>
+                <td>{prod.id}</td>
+                <td>{prod.product}</td>
+                <td>{prod.quantity}</td>
+                <td>{prod.unit}</td>
+                <td>{prod.note}</td>
+              
+              </tr>
+            ))}
+            {
+              console.log(products)
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
    
   );
