@@ -5,6 +5,7 @@ const Product = () => {
   const [quantity, setQuantity] = useState('');
   const [unit, setUnit] = useState('kg');  
   const [note, setNote] = useState(''); 
+<<<<<<< HEAD
   const [salesList, setSalesList] = useState([]);
   const [products, setProducts] = useState([]);
 
@@ -41,10 +42,24 @@ const Product = () => {
       console.log("Fetch error",error)
     }
   };
+=======
+  const [products, setProducts] = useState([]);
+
+  const fetchProducts = async () => {
+    const response = await fetch('http://localhost:8080/api/product');
+    const data = await response.json();
+    setProducts(data);
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+>>>>>>> b1ff02ed3bd015e2f86ae164bbe2353b2e83653c
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = { product, quantity, unit, note   };
+<<<<<<< HEAD
     try {
       const response = await fetch('http://localhost:8080/api/sale', {
         method: 'POST',
@@ -67,6 +82,25 @@ const Product = () => {
     } catch (error) {
       console.error('Error save sale:', error);
       alert('Failed to save sale');
+=======
+
+    const response = await fetch('http://localhost:8080/api/product', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      alert('Product saved successfully');
+      setProduct('');
+      setQuantity('');
+      setUnit('kg');
+      setNote('');
+    } else {
+      alert('Failed to save product');
+>>>>>>> b1ff02ed3bd015e2f86ae164bbe2353b2e83653c
     }
 
   };
@@ -130,7 +164,11 @@ const Product = () => {
       </button>
     </form>
     <div className="mt-5">
+<<<<<<< HEAD
         <h2>Sale List</h2>
+=======
+        <h2>Product List</h2>
+>>>>>>> b1ff02ed3bd015e2f86ae164bbe2353b2e83653c
         <table className="table table-bordered">
           <thead>
             <tr>
@@ -143,6 +181,7 @@ const Product = () => {
             </tr>
           </thead>
           <tbody>
+<<<<<<< HEAD
             {salesList.map((sale) => (
               <tr key={sale.id}>
                 <td>{sale.id}</td>
@@ -154,6 +193,20 @@ const Product = () => {
             ))}
             {
               console.log(salesList)
+=======
+            {products.map((prod) => (
+              <tr key={prod.id}>
+                <td>{prod.id}</td>
+                <td>{prod.product}</td>
+                <td>{prod.quantity}</td>
+                <td>{prod.unit}</td>
+                <td>{prod.note}</td>
+              
+              </tr>
+            ))}
+            {
+              console.log(products)
+>>>>>>> b1ff02ed3bd015e2f86ae164bbe2353b2e83653c
             }
           </tbody>
         </table>
